@@ -9,13 +9,12 @@
 import UIKit
 
 class MainViewController: UITableViewController {
-    
-    let restaurantName = [
-        "Papa Jons",
-        "Tanuki",
-        "Do-do"
-    ]
    
+    let places = [
+        Place(name: "Papa Jons", location: "Moscow", type: "Pizza", image: "Papa Jons"),
+        Place(name: "Tanuki", location: "Moscow", type: "Susi", image: "Tanuki"),
+        Place(name: "Do-do", location: "Moscow", type: "Pizza", image: "Do-do")
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,15 +26,18 @@ class MainViewController: UITableViewController {
    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return restaurantName.count
+        return places.count
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
         
-        cell.nameLabel?.text = restaurantName[indexPath.row]
-        cell.imageOfPlace?.image = UIImage(named: restaurantName[indexPath.row])
+        cell.nameLabel?.text = places[indexPath.row].name
+        cell.locationLabel.text = places[indexPath.row].location
+        cell.typeLabel.text = places[indexPath.row].type
+        cell.imageOfPlace?.image = UIImage(named: places[indexPath.row].image)
+        //скругляем фото
         cell.imageOfPlace?.layer.cornerRadius = cell.imageOfPlace.frame.size.height / 2
         //обрезаем края фото
         cell.imageOfPlace?.clipsToBounds = true
@@ -43,11 +45,6 @@ class MainViewController: UITableViewController {
         return cell
     }
     
-    //MARK: - Table view delegate
-    //высота строки
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 85
-    }
     
     
     /*
@@ -59,5 +56,10 @@ class MainViewController: UITableViewController {
      // Pass the selected object to the new view controller.
      }
      */
+    
+    //метод для возвращения обратно с окна добавления
+    @IBAction func cancelAction(_ segue: UIStoryboardSegue) {
+        
+    }
     
 }

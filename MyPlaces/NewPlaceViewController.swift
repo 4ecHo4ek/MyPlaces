@@ -10,18 +10,32 @@ import UIKit
 
 class NewPlaceViewController: UITableViewController, UINavigationControllerDelegate {
     
-    @IBOutlet weak var imageOfPlace: UIImageView!
+    var newPlace: Place?
     
-    
-    
+    @IBOutlet weak var placeImage: UIImageView!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var placeName: UITextField!
+    @IBOutlet weak var placeLocation: UITextField!
+    @IBOutlet weak var placeType: UITextField!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        saveButton.isEnabled = false
+        //делаем проверку что имя не пустое
+        placeName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+        
         //меняем разлиновку после наших строк ввода на пустое view
         tableView.tableFooterView = UIView()
     }
+    
+    //кнопка выхода из контроллера без сохранения
+    @IBAction func cancelAction(_ sender: UIBarButtonItem) {
+        dismiss(animated: true)
+    }
+    
+    
     
     //MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -71,6 +85,14 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
         
     }
     
+    //функция сохранения данных для передачи на главный контроллер
+    func saveNewPlace() {
+        newPlace = Place(name: placeName.text!,
+                         location: placeLocation.text,
+                         type: placeType.text,
+                         image: placeImage.image, restaurantImage: nil)
+    }
+    
     
 }
 //MARK: - Text field delegate
@@ -80,6 +102,15 @@ extension NewPlaceViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+    //проверка на вкл/выкл кнопки save
+    @objc private func textFieldChanged() {
+        if placeName.text?.isEmpty == false {
+            saveButton.isEnabled = true
+        } else {
+            saveButton.isEnabled = false
+        }
+    }
+    
 }
 
 //MARK: - Work with image
@@ -107,11 +138,11 @@ extension NewPlaceViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo
         info: [UIImagePickerController.InfoKey : Any]) {
         //достаем фото из контроллера и присваиваем его
-        imageOfPlace.image = info[.editedImage] as? UIImage
+        placeImage.image = info[.editedImage] as? UIImage
         //меняем фотрмат фото (чтоб все место занимала, вытягивалось по имаджвью)
-        imageOfPlace.contentMode = .scaleAspectFill
+        placeImage.contentMode = .scaleAspectFill
         //обрезаме по границе
-        imageOfPlace.clipsToBounds = true
+        placeImage.clipsToBounds = true
         //закрываем контроллер
         dismiss(animated: true, completion: nil)
     }

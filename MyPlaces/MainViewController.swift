@@ -10,11 +10,7 @@ import UIKit
 
 class MainViewController: UITableViewController {
    
-    let places = [
-        Place(name: "Papa Jons", location: "Moscow", type: "Pizza", image: "Papa Jons"),
-        Place(name: "Tanuki", location: "Moscow", type: "Susi", image: "Tanuki"),
-        Place(name: "Do-do", location: "Moscow", type: "Pizza", image: "Do-do")
-    ]
+    var places = Place.getPlaces()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,10 +29,19 @@ class MainViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
         
-        cell.nameLabel?.text = places[indexPath.row].name
-        cell.locationLabel.text = places[indexPath.row].location
-        cell.typeLabel.text = places[indexPath.row].type
-        cell.imageOfPlace?.image = UIImage(named: places[indexPath.row].image)
+        let place = places[indexPath.row]
+        
+        cell.nameLabel?.text = place.name
+        cell.locationLabel.text = place.location
+        cell.typeLabel.text = place.type
+        
+        if place.image == nil {
+            cell.imageOfPlace?.image = UIImage(named: place.restaurantImage!)
+        } else {
+            cell.imageOfPlace.image = place.image
+        }
+        
+        
         //скругляем фото
         cell.imageOfPlace?.layer.cornerRadius = cell.imageOfPlace.frame.size.height / 2
         //обрезаем края фото
@@ -58,7 +63,12 @@ class MainViewController: UITableViewController {
      */
     
     //метод для возвращения обратно с окна добавления
-    @IBAction func cancelAction(_ segue: UIStoryboardSegue) {
+    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+        
+        guard let newPlaceVC = segue.source as? NewPlaceViewController else { return }
+        newPlaceVC.saveNewPlace()
+        places.append(newPlaceVC.newPlace!)
+        tableView.reloadData()
         
     }
     

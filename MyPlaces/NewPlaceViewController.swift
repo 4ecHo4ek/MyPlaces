@@ -10,7 +10,7 @@ import UIKit
 
 class NewPlaceViewController: UITableViewController, UINavigationControllerDelegate {
     
-    var newPlace: Place?
+   
     
     @IBOutlet weak var placeImage: UIImageView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -87,10 +87,15 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
     
     //функция сохранения данных для передачи на главный контроллер
     func saveNewPlace() {
-        newPlace = Place(name: placeName.text!,
-                         location: placeLocation.text,
-                         type: placeType.text,
-                         image: placeImage.image, restaurantImage: nil)
+        
+        let imageData = placeImage.image?.pngData()
+        
+        let newPlace = Place(name: placeName.text!,
+                                  location: placeLocation.text,
+                                  type: placeType.text,
+                                  imageData: imageData)
+        
+        StorageManager.saveObject(newPlace)
     }
     
     

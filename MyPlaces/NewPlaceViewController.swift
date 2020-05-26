@@ -10,7 +10,7 @@ import UIKit
 
 class NewPlaceViewController: UITableViewController, UINavigationControllerDelegate {
     
-   
+    var currentPlace: Place?
     
     @IBOutlet weak var placeImage: UIImageView!
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -28,6 +28,8 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
         
         //меняем разлиновку после наших строк ввода на пустое view
         tableView.tableFooterView = UIView()
+        
+        setupEditScreen()
     }
     
     //кнопка выхода из контроллера без сохранения
@@ -35,7 +37,34 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
         dismiss(animated: true)
     }
     
+    //MARK: - методы редактирования ячейки
+    private func setupEditScreen() {
+        if currentPlace != nil {
+            
+            setupNavigationBar()
+            
+            guard let data = currentPlace?.imageData, let image = UIImage(data: data) else { return }
+            placeImage.image = image
+            placeImage.contentMode = .scaleAspectFit
+            placeName.text = currentPlace?.name
+            placeLocation.text = currentPlace?.location
+            placeType.text = currentPlace?.type
+        }
+    }
     
+    private func setupNavigationBar() {
+        //меняем кнопку возврата (чтоб она называлась по дургому)
+        if let topItem = navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(title: "",
+                                                        style: .plain,
+                                                        target: nil,
+                                                        action: nil)
+        }
+        
+        navigationItem.leftBarButtonItem = nil
+        title = currentPlace?.name
+        saveButton.isEnabled = true
+    }
     
     //MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -86,16 +115,25 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
     }
     
     //функция сохранения данных для передачи на главный контроллер
-    func saveNewPlace() {
+    func savePlace() {
         
         let imageData = placeImage.image?.pngData()
         
         let newPlace = Place(name: placeName.text!,
-                                  location: placeLocation.text,
-                                  type: placeType.text,
-                                  imageData: imageData)
-        
-        StorageManager.saveObject(newPlace)
+                             location: placeLocation.text,
+                             type: placeType.text,
+                             imageData: imageData)
+        //проверяем в каком режиме мы находимя: добавление или редактирование
+        if currentPlace != nil {
+            try! realm.write {
+                currentPlace?.name = newPlace.name
+                currentPlace?.location = newPlace.location
+                currentPlace?.type = newPlace.type
+                currentPlace?.imageData = newPlace.imageData
+            }
+        } else {
+            StorageManager.saveObject(newPlace)
+        }
     }
     
     

@@ -49,23 +49,50 @@ class MainViewController: UITableViewController {
         return cell
     }
     
+    //MARK: - Table view delegate
+    //действие по свайпу
+    //Данный метод избыточен, так как у нас только одно действие для свайпа 
+    /**
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let place = places[indexPath.row]
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (_, _, _) in
+            StorageManager.deleteObject(place)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+    */
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            let place = places[indexPath.row]
+            StorageManager.deleteObject(place)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
     
     
-    /*
+    
      // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     //передача данных для редактирования через тапанье на ячейку
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
+        guard segue.identifier == "showDetail" else { return }
+        guard let indexPath = tableView.indexPathForSelectedRow else { return }
+        let place = places[indexPath.row]
+        let newPlaceVC = segue.destination as! NewPlaceViewController
+        newPlaceVC.currentPlace = place
      }
-     */
+     
     
     //метод для возвращения обратно с окна добавления
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
         
         guard let newPlaceVC = segue.source as? NewPlaceViewController else { return }
-        newPlaceVC.saveNewPlace()
+        newPlaceVC.savePlace()
         tableView.reloadData()
         
     }

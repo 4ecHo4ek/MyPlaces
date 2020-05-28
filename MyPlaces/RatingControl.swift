@@ -27,6 +27,13 @@ class RatingControl: UIStackView {
         setupButtons()
     }
     
+    //MARK: - Button Action
+    
+    @objc func retingButtonTapped(button: UIButton) {
+        print("Button is tapped")
+    }
+    
+    
     //MARK: - Private Methods
     //метод по доабавлению кнопок в стеквью (который мы уже разметили на сторибоард вручную!!!)
     private func setupButtons() {
@@ -41,6 +48,10 @@ class RatingControl: UIStackView {
         //в двух строках определяем высоту и ширину кнопки
         button.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
         button.widthAnchor.constraint(equalToConstant: 44.0).isActive = true
+        
+        //Setup the button action
+        button.addTarget(self, action: #selector(retingButtonTapped), for: .touchUpInside)
+        
         
         //Add the button to the stack
         addArrangedSubview(button)

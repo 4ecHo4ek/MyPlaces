@@ -11,6 +11,7 @@
 		3A44F5FC247C196000BA3BCB /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F5FB247C196000BA3BCB /* CustomTableViewCell.swift */; };
 		3A44F5FE247C1E7600BA3BCB /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F5FD247C1E7600BA3BCB /* PlaceModel.swift */; };
 		3A44F600247C28CF00BA3BCB /* NewPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A44F5FF247C28CF00BA3BCB /* NewPlaceViewController.swift */; };
+		3AD65894247FE19700D38536 /* RatingControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD65893247FE19700D38536 /* RatingControl.swift */; };
 		3AED8650247BD4C5007AF605 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AED864F247BD4C5007AF605 /* AppDelegate.swift */; };
 		3AED8652247BD4C5007AF605 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AED8651247BD4C5007AF605 /* SceneDelegate.swift */; };
 		3AED8657247BD4C5007AF605 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AED8655247BD4C5007AF605 /* Main.storyboard */; };
@@ -26,6 +27,7 @@
 		3A44F5FB247C196000BA3BCB /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		3A44F5FD247C1E7600BA3BCB /* PlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceModel.swift; sourceTree = "<group>"; };
 		3A44F5FF247C28CF00BA3BCB /* NewPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlaceViewController.swift; sourceTree = "<group>"; };
+		3AD65893247FE19700D38536 /* RatingControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingControl.swift; sourceTree = "<group>"; };
 		3AED864C247BD4C5007AF605 /* MyPlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AED864F247BD4C5007AF605 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3AED8651247BD4C5007AF605 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				3A44F5FF247C28CF00BA3BCB /* NewPlaceViewController.swift */,
 				3A44F5FD247C1E7600BA3BCB /* PlaceModel.swift */,
 				3A430F35247D1E6F00811470 /* StorageManager.swift */,
+				3AD65893247FE19700D38536 /* RatingControl.swift */,
 				3AED8655247BD4C5007AF605 /* Main.storyboard */,
 				3AED8658247BD4C6007AF605 /* Assets.xcassets */,
 				3AED865A247BD4C6007AF605 /* LaunchScreen.storyboard */,
@@ -222,6 +225,7 @@
 				3A44F600247C28CF00BA3BCB /* NewPlaceViewController.swift in Sources */,
 				3AED8650247BD4C5007AF605 /* AppDelegate.swift in Sources */,
 				3A430F36247D1E6F00811470 /* StorageManager.swift in Sources */,
+				3AD65894247FE19700D38536 /* RatingControl.swift in Sources */,
 				3A44F5FE247C1E7600BA3BCB /* PlaceModel.swift in Sources */,
 				3A44F5FC247C196000BA3BCB /* CustomTableViewCell.swift in Sources */,
 				3AED8652247BD4C5007AF605 /* SceneDelegate.swift in Sources */,

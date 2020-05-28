@@ -190,3 +190,4 @@ extension NewPlaceViewController: UIImagePickerControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
 }
+  

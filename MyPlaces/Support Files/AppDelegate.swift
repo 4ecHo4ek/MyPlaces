@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        let schemaVersion: UInt64 = 2
         
         //!!!!!!!!!!! - этот участок переносим
         let config = Realm.Configuration(
@@ -26,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             //эта версия должна быть выше предыдущей (первая 0, каждое следующее обновление БД
             //на 1 выше
-            schemaVersion: 1,
+            schemaVersion: schemaVersion,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above

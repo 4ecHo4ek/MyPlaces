@@ -17,6 +17,7 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
     @IBOutlet weak var placeName: UITextField!
     @IBOutlet weak var placeLocation: UITextField!
     @IBOutlet weak var placeType: UITextField!
+    @IBOutlet weak var ratingControl: RatingControl!
     
     
     override func viewDidLoad() {
@@ -27,8 +28,9 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
         placeName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         
         //меняем разлиновку после наших строк ввода на пустое view
-        tableView.tableFooterView = UIView()
-        
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
+                                                         width: tableView.frame.size.width,
+                                                         height: 1))
         setupEditScreen()
     }
     
@@ -49,6 +51,7 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
             placeName.text = currentPlace?.name
             placeLocation.text = currentPlace?.location
             placeType.text = currentPlace?.type
+            ratingControl.rating = Int(currentPlace!.rating)
         }
     }
     
@@ -114,6 +117,30 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
         
     }
     
+    //MARK: - navigation
+    //метод по переходу на мапкит
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        guard
+            let identifier = segue.identifier,
+            let mapVC = segue.destination as? MapViewController
+            else { return }
+        
+        mapVC.incomeSegueIdentifier = identifier
+        mapVC.mapViewControllerDelegate = self
+        
+        //если переходим не по идетификатору мап кита, то выходим
+        if identifier == "showPlace" {
+            
+            mapVC.place.name = placeName.text!
+            mapVC.place.location = placeLocation.text!
+            mapVC.place.type = placeType.text
+            mapVC.place.imageData = placeImage.image?.pngData()
+        }
+    }
+    
+    
+    
     //функция сохранения данных для передачи на главный контроллер
     func savePlace() {
         
@@ -122,7 +149,8 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
         let newPlace = Place(name: placeName.text!,
                              location: placeLocation.text,
                              type: placeType.text,
-                             imageData: imageData)
+                             imageData: imageData,
+                             rating: Double(ratingControl.rating))
         //проверяем в каком режиме мы находимя: добавление или редактирование
         if currentPlace != nil {
             try! realm.write {
@@ -130,11 +158,14 @@ class NewPlaceViewController: UITableViewController, UINavigationControllerDeleg
                 currentPlace?.location = newPlace.location
                 currentPlace?.type = newPlace.type
                 currentPlace?.imageData = newPlace.imageData
+                currentPlace?.rating = newPlace.rating
             }
         } else {
             StorageManager.saveObject(newPlace)
         }
     }
+    
+    
     
     
 }
@@ -190,4 +221,11 @@ extension NewPlaceViewController: UIImagePickerControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
 }
-  
+
+extension NewPlaceViewController: MapViewControllerDelegate {
+    
+    func getAddress(_ address: String?) {
+        placeLocation.text = address
+    }
+    
+}

@@ -69,7 +69,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         
         //если массив пустой, то выдай 0, иначе кол-во элементов
-        return places.isEmpty ? 0 : places.count
+        return  places.count
     }
     
     
@@ -77,13 +77,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
         
         //выбираем что отображать (фильтрованную инфу или нет)
-        var place = Place()
         
-        if isFilteing {
-            place = filtredPlaces[indexPath.row]
-        } else {
-            place = places[indexPath.row]
-        }
+        let place = isFilteing ? filtredPlaces[indexPath.row] : places[indexPath.row]
      
         
         cell.nameLabel?.text = place.name
@@ -91,10 +86,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.typeLabel.text = place.type
         cell.imageOfPlace.image = UIImage(data: place.imageData!)
         
-        //скругляем фото
-        cell.imageOfPlace?.layer.cornerRadius = cell.imageOfPlace.frame.size.height / 2
-        //обрезаем края фото
-        cell.imageOfPlace?.clipsToBounds = true
+        //делаем космос вью активным
+        cell.cosmosView.rating = place.rating
+        
+  
         
         return cell
     }
@@ -125,7 +120,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    
+    //снимаем выделение ячейки после нажатия
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
     // MARK: - Navigation
     //передача данных для редактирования через тапанье на ячейку
@@ -134,12 +132,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         guard let indexPath = tableView.indexPathForSelectedRow else { return }
         //проверяем активна ли строка поиска (при наборе ее создается новый контроллер
         //чтоб при редактированнии отфильтрованной ячейки не фильтровалась та, что находится на ее месте в родительском контроллере)
-        let place: Place
-        if isFilteing {
-            place = filtredPlaces[indexPath.row]
-        } else {
-            place = places[indexPath.row]
-        }
+        let place = isFilteing ? filtredPlaces[indexPath.row] : places[indexPath.row]
         
         let newPlaceVC = segue.destination as! NewPlaceViewController
         newPlaceVC.currentPlace = place
